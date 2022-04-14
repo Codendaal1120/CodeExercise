@@ -76,13 +76,6 @@ namespace CodeExercise.LocationService.Test
         [Test(Description = "Test a basic search with a NULL location")]
         public void TestBasicSearchWithNullLocation()
         {
-            var sample = new Location()
-            {
-                Address = "TEST",
-                Latitude = 51.9055491,
-                Longitude = 6.1174997
-            };
-
             var results = _locationSearchService.GetLocations(null!, 10, 1);
 
             Assert.False(results.Success, "Null input expected to fail");

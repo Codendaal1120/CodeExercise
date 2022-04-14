@@ -18,7 +18,7 @@ namespace CodeExercise.LocationService
         /// <inheritdoc/>
         public SearchResults<IEnumerable<ISearchLocation>> GetLocations(ILocation location, int maxDistance, int maxResults)
         {
-            if (location == null) return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid location");
+            if (location == null!) return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid location");
             if (maxDistance <= 0) return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid max distance");
             if (maxResults <= 0) return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid max results");
 

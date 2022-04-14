@@ -57,6 +57,11 @@ namespace CodeExercise.LocationRepository
         // if its needed elsewhere it can be changed into an extension or static utility
         private double CalculateDistanceInMeters(ILocation loc1, ILocation loc2)
         {
+            if (loc1.Latitude == loc2.Latitude && loc1.Longitude == loc2.Longitude)
+            {
+                return 0;
+            }
+
             var rlat1 = Math.PI * loc1.Latitude / 180;
             var rlat2 = Math.PI * loc2.Latitude / 180;
             var rlon1 = Math.PI * loc1.Longitude / 180;

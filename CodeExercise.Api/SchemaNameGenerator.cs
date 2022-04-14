@@ -5,7 +5,7 @@ namespace CodeExercise.Api
     /// <summary>
     /// Transforms internal schema names into public ones for swagger documentation
     /// </summary>
-    public class SchemaNameGenerator : ISchemaNameGenerator
+    internal class SchemaNameGenerator : ISchemaNameGenerator
     {
         /// <inheritdoc cref="ISchemaNameGenerator"/>
         public string Generate(Type type)

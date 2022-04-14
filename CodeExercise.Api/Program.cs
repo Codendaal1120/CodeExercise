@@ -26,7 +26,11 @@ builder.Services.AddSwaggerDocument(settings =>
 
 // Add dependency injection
 builder.Services.AddSingleton<ILocationSearchService, LocationSearchService>();
-builder.Services.AddSingleton<ILocationDataProvider, CsvLocationDataLoader>();
+builder.Services.AddSingleton<ILocationDataProvider, CsvLocationDataLoader>(sp =>
+{
+    var log = sp.GetRequiredService<ILogger<CsvLocationDataLoader>>();
+    return new CsvLocationDataLoader(log, "../locations.csv");
+});
 builder.Services.AddSingleton<ILocationRepository, LocationRepo>(sp =>
 {
     var ldp = sp.GetRequiredService<ILocationDataProvider>();

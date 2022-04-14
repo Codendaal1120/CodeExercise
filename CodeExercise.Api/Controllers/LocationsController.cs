@@ -34,7 +34,10 @@ namespace CodeExercise.Api.Controllers
         [Route("")]
         [ProducesResponseType(typeof(IReadOnlyCollection<LocationApi>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult SearchLocations([Required] double longitude, [Required] double latitude, int maxDistance = 50, int maxResults = 25)
+        public IActionResult SearchLocations(
+            [Required] [Range(typeof(double), "-180.0", "180.0")] double longitude, 
+            [Required] [Range(typeof(double), "-90.0", "90.0")] double latitude, 
+            int maxDistance = 50, int maxResults = 25)
         {
             var results = _locationSearchService.GetLocations(
                 new Location() {Latitude = latitude, Longitude = longitude},
