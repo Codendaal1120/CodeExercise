@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeExercise.Api.Controllers
 {
+    /// <summary>
+    /// Locations api
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class LocationsController : ControllerBase
@@ -12,15 +15,24 @@ namespace CodeExercise.Api.Controllers
         private readonly ILogger<LocationsController> _logger;
         private readonly ILocationSearchService _locationSearchService;
 
+        /// <summary/>
         public LocationsController(ILogger<LocationsController> logger, ILocationSearchService locationSearchService)
         {
             _logger = logger;
             _locationSearchService = locationSearchService;
         }
 
+        /// <summary>
+        /// Search for locations located near a target coordinates
+        /// </summary>
+        /// <param name="longitude">Target longitude</param>
+        /// <param name="latitude">Target latitude</param>
+        /// <param name="maxDistance">Max distance in meters from target location</param>
+        /// <param name="maxResults">Maximum number of results</param>
+        /// <returns>Collection of locations within the max distance from the target location</returns>
         [HttpGet]
         [Route("")]
-        [ProducesResponseType(typeof(SearchResultsApi), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IReadOnlyCollection<LocationApi>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult SearchLocations([Required] double longitude, [Required] double latitude, int maxDistance = 50, int maxResults = 25)
         {
@@ -30,7 +42,7 @@ namespace CodeExercise.Api.Controllers
                 maxResults);
 
             return results.Success
-                ? Ok(results.Value.Select(x => new SearchResultsApi(x)))
+                ? Ok(results.Value!.Select(x => new LocationApi(x)))
                 : BadRequest(results.ErrorMessage);
         }
     }

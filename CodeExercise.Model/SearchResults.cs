@@ -5,16 +5,20 @@
 /// </summary>
 public class SearchResults<T>
 {
-    public T Value { get; }
+    public T? Value { get; }
     public bool Success { get; }
-    public string ErrorMessage { get; }
+    public string? ErrorMessage { get; }
 
+    /// <summary/>
+    /// <exception cref="ArgumentNullException"></exception>
     private SearchResults(T value)
     {
         Value = value ?? throw new ArgumentNullException(nameof(value));
         Success = true;
     }
 
+    /// <summary/>
+    /// <exception cref="ArgumentNullException"></exception>
     private SearchResults(string errorMessage)
     {
         Success = false;

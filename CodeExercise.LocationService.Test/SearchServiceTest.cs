@@ -9,7 +9,7 @@ namespace CodeExercise.LocationService.Test
 {
     public class SearchServiceTest
     {
-        private ILocationSearchService _locationSearchService;
+        private ILocationSearchService _locationSearchService = null!;
 
         [SetUp]
         public void Setup()
@@ -45,7 +45,7 @@ namespace CodeExercise.LocationService.Test
 
             Assert.True(results.Success, results.ErrorMessage);
 
-            var resultArray = results.Value.ToArray();
+            var resultArray = results.Value!.ToArray();
 
             Assert.GreaterOrEqual(resultArray.Length, 1);
             Assert.LessOrEqual(resultArray.Length, maxResults);
@@ -64,7 +64,7 @@ namespace CodeExercise.LocationService.Test
                 Longitude = 6.1174997
             };
 
-            var results = _locationSearchService.GetLocations(null, 10, 1);
+            var results = _locationSearchService.GetLocations(null!, 10, 1);
 
             Assert.False(results.Success, "Null input expected to fail");
             Assert.AreEqual("Invalid location", results.ErrorMessage);

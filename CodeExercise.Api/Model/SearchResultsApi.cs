@@ -1,19 +1,34 @@
 ﻿using CodeExercise.Model;
+using Newtonsoft.Json;
 
 namespace CodeExercise.Api.Model
 {
     // Typically this model will be decorated with JSON annotations for serialization
 
     /// <summary>
-    /// Location search results
+    /// Represents a location
     /// </summary>
-    public class SearchResultsApi : ILocation
+    [JsonObject("Location")]
+    public class LocationApi : ILocation
     {
+        /// <summary>
+        /// Location text address
+        /// </summary>
         public string Address { get; }
+
+        /// <summary>
+        /// Location Latitude
+        /// </summary>
         public double Latitude { get; }
+
+        /// <summary>
+        /// Location Longitude
+        /// </summary>
         public double Longitude { get; }
 
-        public SearchResultsApi(ILocation loc)
+        /// <summary/>
+        /// <exception cref="ArgumentNullException"></exception>
+        public LocationApi(ILocation loc)
         {
             if (loc == null) throw new ArgumentNullException(nameof(loc));
 

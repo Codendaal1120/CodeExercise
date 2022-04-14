@@ -72,6 +72,8 @@ namespace CodeExercise.LocationRepository
             return results!;
         }
 
+        // Since this calculation is only done here, we can isolate it,
+        // if its needed elsewhere it can be changed into an extension or static utility
         private double CalculateDistanceInMeters(ILocation loc1, ILocation loc2)
         {
             var rlat1 = Math.PI * loc1.Latitude / 180;
