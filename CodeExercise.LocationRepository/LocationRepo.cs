@@ -1,50 +1,25 @@
-﻿using System.Globalization;
-using CodeExercise.Model;
-using CsvHelper;
+﻿using CodeExercise.Model;
 using Microsoft.Extensions.Logging;
 
 namespace CodeExercise.LocationRepository
 {
-    public class Repository : ILocationRepository
+    /// <inheritdoc cref="ILocationRepository"/>
+    public class LocationRepo : ILocationRepository
     {
-        private readonly ILogger<Repository> _logger;
-        private readonly IReadOnlyCollection<ILocation> _locations;
-        
+        private readonly ILogger<LocationRepo> _logger;
+        private readonly List<ILocation> _locations;
+
         /// <summary>
-        /// Create instance of the Repository
+        /// Create instance of the LocationRepo
         /// </summary>
         /// <param name="logger">Default logger</param>
-        /// <param name="sourceFile">Path to the source csv</param>
-        /// <param name="multiplyLocations">Testing parameter to duplicate the records</param>
-        public Repository(ILogger<Repository> logger, string sourceFile = "locations.csv", int multiplyLocations = 1)
+        /// <param name="dataProvider">Data source provider</param>
+        public LocationRepo(ILogger<LocationRepo> logger, ILocationDataProvider dataProvider)
         {
-            if (sourceFile == null) throw new ArgumentNullException(nameof(sourceFile));
+            if (dataProvider == null) throw new ArgumentNullException(nameof(dataProvider));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            try
-            {
-                using var sr = new StreamReader(sourceFile);
-                using var csv = new CsvReader(sr, CultureInfo.InvariantCulture);
-                _locations = csv.GetRecords<Location>().ToArray();
-
-                if (multiplyLocations > 1)
-                {
-                    var list = _locations.ToList();
-                    for (var i = 1; i < multiplyLocations; i++)
-                    {
-                        list.AddRange(_locations);
-                    }
-
-                    _locations = list;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Unable to load locations : {Error}", e.Message);
-                // rethrow as this is a critical failure
-                throw;
-            }
+            _locations = dataProvider.GetData().ToList();
         }
 
         //https://medium.com/@alexander.mueller/experiments-with-in-memory-spatial-radius-queries-in-python-e40c9e66cf63
@@ -53,6 +28,7 @@ namespace CodeExercise.LocationRepository
         //    return GetLocationsBasicSearch(location, maxDistance, maxResults);
         //}
 
+        /// <inheritdoc/>
         public IEnumerable<ILocation> GetLocationsBasicSearch(ILocation location, int maxDistance, int maxResults)
         {
             var results = _locations.Select(x =>
@@ -61,7 +37,7 @@ namespace CodeExercise.LocationRepository
 
                     // Create a new object with the distance stored as
                     // we do not want to calculate this twice
-                    return dist >= maxDistance
+                    return dist <= maxDistance
                         ? new SearchLocation(x, dist)
                         : null;
                 })
@@ -70,6 +46,16 @@ namespace CodeExercise.LocationRepository
                 .Take(maxResults);
 
             return results!;
+        }
+
+        public void AddLocation(ILocation location)
+        {
+            _locations.Add(location);
+        }
+
+        public IEnumerable<ILocation> GetLocationsGeoHash(ILocation location, int maxDistance, int maxResults)
+        {
+            return Array.Empty<ILocation>();
         }
 
         // Since this calculation is only done here, we can isolate it,
@@ -88,6 +74,11 @@ namespace CodeExercise.LocationRepository
             dist = dist * 60 * 1.1515;
 
             return dist * 1609.344;
+        }
+
+        private void BuildGeoIndex()
+        {
+            //https://github.com/Postlagerkarte/geohash-dotnet
         }
     }
 }

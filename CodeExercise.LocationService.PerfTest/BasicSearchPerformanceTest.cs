@@ -10,10 +10,8 @@ using NUnit.Framework;
 
 namespace CodeExercise.LocationService.PerfTest
 {
-    public class BasicSearchTest
+    public class BasicSearchPerformanceTest
     {
-        
-
         [SetUp]
         public void Setup()
         {
@@ -27,8 +25,8 @@ namespace CodeExercise.LocationService.PerfTest
         {
             var ls = new LocationSearchService(
                 new NullLogger<LocationSearchService>(),
-                new LocationRepository.Repository(
-                    new NullLogger<LocationRepository.Repository>()));
+                new LocationRepository.LocationRepo(
+                    new NullLogger<LocationRepository.LocationRepo>()));
 
             var timer = new Stopwatch();
 
@@ -53,8 +51,8 @@ namespace CodeExercise.LocationService.PerfTest
         {
             var ls = new LocationSearchService(
                 new NullLogger<LocationSearchService>(),
-                new LocationRepository.Repository(
-                    new NullLogger<LocationRepository.Repository>()));
+                new LocationRepository.LocationRepo(
+                    new NullLogger<LocationRepository.LocationRepo>()));
 
             var timer = new Stopwatch();
 
@@ -79,8 +77,8 @@ namespace CodeExercise.LocationService.PerfTest
         {
             var ls = new LocationSearchService(
                 new NullLogger<LocationSearchService>(),
-                new LocationRepository.Repository(
-                    new NullLogger<LocationRepository.Repository>(), multiplyLocations:10));
+                new LocationRepository.LocationRepo(
+                    new NullLogger<LocationRepository.LocationRepo>(), multiplyLocations:10));
 
             var timer = new Stopwatch();
 
@@ -105,8 +103,8 @@ namespace CodeExercise.LocationService.PerfTest
         {
             var ls = new LocationSearchService(
                 new NullLogger<LocationSearchService>(),
-                new LocationRepository.Repository(
-                    new NullLogger<LocationRepository.Repository>(), multiplyLocations: 100));
+                new LocationRepository.LocationRepo(
+                    new NullLogger<LocationRepository.LocationRepo>(), multiplyLocations: 100));
 
             var timer = new Stopwatch();
 

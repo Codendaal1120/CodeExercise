@@ -25,8 +25,9 @@ builder.Services.AddSwaggerDocument(settings =>
 });
 
 // Add dependency injection
-builder.Services.AddSingleton<ILocationRepository, Repository>();
+builder.Services.AddSingleton<ILocationRepository, LocationRepo>();
 builder.Services.AddSingleton<ILocationSearchService, LocationSearchService>();
+builder.Services.AddSingleton<ILocationDataProvider, CsvLocationDataLoader>();
 
 // Build application
 var app = builder.Build();

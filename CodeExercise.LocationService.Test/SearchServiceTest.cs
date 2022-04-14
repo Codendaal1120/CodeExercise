@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeExercise.Model;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -126,5 +127,6 @@ namespace CodeExercise.LocationService.Test
             Assert.False(results.Success, "Invalid max results expected to fail");
             Assert.AreEqual("Invalid max results", results.ErrorMessage);
         }
+        
     }
 }

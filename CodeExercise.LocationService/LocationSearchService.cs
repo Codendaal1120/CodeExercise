@@ -38,7 +38,7 @@ namespace CodeExercise.LocationService
                 return SearchResults<IEnumerable<ILocation>>.Fail(e.Message);
             }
         }
-
+        
         public static bool IsLocationValid(ILocation loc)
         {
             if (loc.Latitude is < -90 or > 90)
