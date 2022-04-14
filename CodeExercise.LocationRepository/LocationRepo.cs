@@ -10,7 +10,7 @@ namespace CodeExercise.LocationRepository
     {
         private readonly ILogger<LocationRepo> _logger;
         private readonly List<ILocation> _locations;
-        private Dictionary<string, ILocation[]> _hashedLocations2;
+        private Dictionary<string, ILocation[]> _regions;
         private readonly LocationRepoSettings _settings;
         
         /// <summary>
@@ -23,7 +23,7 @@ namespace CodeExercise.LocationRepository
         {
             if (dataProvider == null) throw new ArgumentNullException(nameof(dataProvider));
 
-            _hashedLocations2 = new Dictionary<string, ILocation[]>();
+            _regions = new Dictionary<string, ILocation[]>();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _locations = dataProvider.GetData().ToList();
             _settings = settings ?? new LocationRepoSettings();
@@ -37,7 +37,7 @@ namespace CodeExercise.LocationRepository
         /// <inheritdoc/>
         public IEnumerable<ILocation> GetLocations(ILocation location, int maxDistance, int maxResults)
         {
-            return _hashedLocations2.Any()
+            return _regions.Any()
                 ? GetLocationsGeoHash(location, maxDistance, maxResults)
                 : GetLocationsBruteForce(_locations, location, maxDistance, maxResults);
         }
@@ -77,7 +77,7 @@ namespace CodeExercise.LocationRepository
         {
             var hasher = new Geohasher();
             
-            _hashedLocations2 = _locations
+            _regions = _locations
                 .GroupBy(x => hasher.Encode(x.Latitude, x.Longitude, _settings.HashingPrecision))
                 .ToDictionary(k => k.Key, v => v.ToArray());
         }
@@ -107,7 +107,7 @@ namespace CodeExercise.LocationRepository
             var locationHash = hasher.Encode(location.Latitude, location.Longitude, _settings.HashingPrecision);
 
             // try to reduce the scope 
-            if (_hashedLocations2.TryGetValue(locationHash, out var foundLocations))
+            if (_regions.TryGetValue(locationHash, out var foundLocations))
             {
                 return GetLocationsBruteForce(foundLocations, location, maxDistance, maxResults);
             }
