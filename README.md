@@ -29,6 +29,7 @@ My approach to the searching was to implement a basic search first, and then eva
 GeoHashing will allow me to create a hash string for a particular location, this can then be used to 'match' other locations containing the same hash, a.k.a they are close to each other. My plan was to build an index when the application starts, or loads the location data into memory, and then calculate a hash for each location. This would incur an initial cost, but subsequent queries should be faster. Initially my plan was to possibly sort the collection using the hash which would speed up my search query. The problem was that the location hash requires a precision, which is not directly translatable to distance. In order for me to honour the maxDistance in the search query, I would possibly need to calculate the hash on each query. Instead, what I ended up doing was to create a small precision (wider radius) and then group locations into regions, which I can use to reduce the initial search values. I would then rely on the brute force to filter within a region
 
 ### **Metrics**
+![gallery](https://raw.githubusercontent.com/Codendaal1120/CodeExercise/main/Documentation/perf.png)
 
 ## **Conclusion**
 The performance increased significantly with the introduction of the hashing, but as I am relatively new to this topic I would warrant some further testing to confirm the accuracy.
