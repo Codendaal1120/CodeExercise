@@ -8,7 +8,10 @@ using NUnit.Framework;
 
 namespace CodeExercise.LocationRepository.Test
 {
-    public class BasicSearchPerformanceTest : TestBase
+    /// <summary>
+    /// Performance test searching using geo hashing
+    /// </summary>
+    public class AdvancedSearchPerformanceTest : TestBase
     {
         [SetUp]
         public void Setup()
@@ -21,7 +24,7 @@ namespace CodeExercise.LocationRepository.Test
         [Test(Description = "Search the default repo of 168 891 records for maximum of 10")]
         public void SearchDefaultRepoFor10Results()
         {
-            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestCsvLocationDataLoader());
+            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestCsvLocationDataLoader(), new LocationRepoSettings() { UseGeoHashing = true });
             var ls = CreateLocationService(repo);
 
             var timer = new Stopwatch();
@@ -45,7 +48,7 @@ namespace CodeExercise.LocationRepository.Test
         [Test(Description = "Search the default repo of 168 891 records for maximum of 50")]
         public void SearchDefaultRepoFor50Results()
         {
-            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestCsvLocationDataLoader());
+            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestCsvLocationDataLoader(), new LocationRepoSettings() { UseGeoHashing = true });
             var ls = CreateLocationService(repo);
 
             var timer = new Stopwatch();
@@ -69,7 +72,11 @@ namespace CodeExercise.LocationRepository.Test
         [Test(Description = "Search the default repo of 168 891 * 10 records for maximum of 50")]
         public void Search10XRepoFor50Results()
         {
-            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestCsvLocationDataLoader(multiplyLocations:10));
+            var repo = new LocationRepo(
+                new NullLogger<LocationRepo>(), 
+                new TestCsvLocationDataLoader(multiplyLocations: 10),
+                new LocationRepoSettings() { UseGeoHashing = true });
+
             var ls = CreateLocationService(repo);
 
             var timer = new Stopwatch();
@@ -93,7 +100,11 @@ namespace CodeExercise.LocationRepository.Test
         [Test(Description = "Search the default repo of 168 891 * 100 records for maximum of 50")]
         public void Search100XRepoFor50Results()
         {
-            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestCsvLocationDataLoader(multiplyLocations: 100));
+            var repo = new LocationRepo(
+                new NullLogger<LocationRepo>(),
+                new TestCsvLocationDataLoader(multiplyLocations: 100),
+                new LocationRepoSettings() { UseGeoHashing = true, HashingPrecision = 6 });
+
             var ls = CreateLocationService(repo);
 
             var timer = new Stopwatch();
@@ -127,6 +138,6 @@ namespace CodeExercise.LocationRepository.Test
             return results.Value!.ToArray();
         }
 
-    
+
     }
 }

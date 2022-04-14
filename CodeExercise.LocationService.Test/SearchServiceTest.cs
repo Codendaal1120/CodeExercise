@@ -18,7 +18,7 @@ namespace CodeExercise.LocationService.Test
             var mockRepo = new Mock<ILocationRepository>();
 
             // For unit test just return a collection containing the supplied location
-            mockRepo.Setup(x => x.GetLocationsBasicSearch(
+            mockRepo.Setup(x => x.GetLocations(
                 It.IsAny<ILocation>(),
                 It.IsAny<int>(),
                 It.IsAny<int>()))

@@ -29,7 +29,7 @@ namespace CodeExercise.LocationService
 
             try
             {
-                var locations = _repo.GetLocationsBasicSearch(location, maxDistance, maxResults);
+                var locations = _repo.GetLocations(location, maxDistance, maxResults);
                 return SearchResults<IEnumerable<ILocation>>.Succeed(locations);
             }
             catch (Exception e)

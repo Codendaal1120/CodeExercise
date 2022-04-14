@@ -1,13 +1,13 @@
-using System.Diagnostics;
 using System.Linq;
-using CodeExercise.LocationService;
 using CodeExercise.Model;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 
 namespace CodeExercise.LocationRepository.Test
 {
+    /// <summary>
+    /// Performance test searching using brute force
+    /// </summary>
     public class BasicSearchAccuracyTest : TestBase
     {
         [SetUp]
@@ -19,7 +19,7 @@ namespace CodeExercise.LocationRepository.Test
         /// Test search accuracy
         /// </summary>
         [Test(Description = "Test the basic search accuracy within 500 meters")]
-        public void TestBasicSearchAccuracyWithin100M()
+        public void TestBasicSearchAccuracyWithin500M()
         {
             var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestCsvLocationDataLoader());
 
@@ -44,8 +44,7 @@ namespace CodeExercise.LocationRepository.Test
                 Longitude = 18.532046802370058
             };
 
-            repo.AddLocation(location450MAway);
-            repo.AddLocation(location550MAway);
+            repo.AddLocations(new []{ location450MAway, location550MAway });
 
             var ls = CreateLocationService(repo);
 
@@ -105,10 +104,7 @@ namespace CodeExercise.LocationRepository.Test
                 Longitude = 18.543655910826285
             };
 
-            repo.AddLocation(location450MAway);
-            repo.AddLocation(location550MAway);
-            repo.AddLocation(location1000MAway);
-            repo.AddLocation(location1600MAway);
+            repo.AddLocations(new []{ location450MAway, location550MAway, location1000MAway, location1600MAway });
 
             var ls = CreateLocationService(repo);
             var results = ls.GetLocations(refLocation, 1500, 10);
@@ -122,6 +118,52 @@ namespace CodeExercise.LocationRepository.Test
             Assert.AreEqual(3, resultArray.Length, "Expected test values to be returned");
 
             Assert.AreEqual(location450MAway.Address, resultArray[0].Address, "Only valid result was expected to be the control location within 500m");
+        }
+
+        /// <summary>
+        /// Test search accuracy
+        /// </summary>
+        [Test(Description = "Test the basic search accuracy within 1 meters")]
+        public void TestBasicSearchAccuracyWithin1M()
+        {
+            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestEmptyLocationDataLoader());
+
+            var refLocation = new Location()
+            {
+                Address = "REF",
+                Latitude = -33.92947021141639,
+                Longitude = 18.5263035154
+            };
+
+            var location1MAway = new Location()
+            {
+                Address = "1Test",
+                Latitude = -33.92947188053884,
+                Longitude = 18.526305527056785
+            };
+
+            var location5MAway = new Location()
+            {
+                Address = "5Test",
+                Latitude = -33.92945685843556,
+                Longitude = 18.526356489028682
+            };
+
+            repo.AddLocations(new[] { location1MAway, location5MAway });
+
+            var ls = CreateLocationService(repo);
+
+            var results = ls.GetLocations(refLocation, 1, 10);
+
+            Assert.True(results.Success, results.ErrorMessage);
+
+            var resultArray = results.Value!.ToArray();
+
+            // Since we know that the locations added are way out of the original list (location wise),
+            // the control test should only return the 1 test location
+            Assert.AreEqual(1, resultArray.Length, "Expected test values to be returned");
+
+            Assert.AreEqual(location1MAway.Address, resultArray[0].Address, "Only valid result was expected to be the control location within 1m");
         }
     }
     

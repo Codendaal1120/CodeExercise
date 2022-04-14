@@ -25,9 +25,14 @@ builder.Services.AddSwaggerDocument(settings =>
 });
 
 // Add dependency injection
-builder.Services.AddSingleton<ILocationRepository, LocationRepo>();
 builder.Services.AddSingleton<ILocationSearchService, LocationSearchService>();
 builder.Services.AddSingleton<ILocationDataProvider, CsvLocationDataLoader>();
+builder.Services.AddSingleton<ILocationRepository, LocationRepo>(sp =>
+{
+    var ldp = sp.GetRequiredService<ILocationDataProvider>();
+    var log = sp.GetRequiredService<ILogger<LocationRepo>>();
+    return new LocationRepo(log, ldp, new LocationRepoSettings() { UseGeoHashing = true });
+});
 
 // Build application
 var app = builder.Build();
