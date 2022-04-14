@@ -13,6 +13,6 @@ namespace CodeExercise.Model
         /// <param name="location">The reference location</param>
         /// <param name="maxDistance">Max distance in meters</param>
         /// <param name="maxResults">Maximum number of results</param>
-        SearchResults<IEnumerable<ILocation>> GetLocations(ILocation location, int maxDistance, int maxResults);
+        SearchResults<IEnumerable<ISearchLocation>> GetLocations(ILocation location, int maxDistance, int maxResults);
     }
 }

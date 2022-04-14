@@ -16,26 +16,26 @@ namespace CodeExercise.LocationService
         }
 
         /// <inheritdoc/>
-        public SearchResults<IEnumerable<ILocation>> GetLocations(ILocation location, int maxDistance, int maxResults)
+        public SearchResults<IEnumerable<ISearchLocation>> GetLocations(ILocation location, int maxDistance, int maxResults)
         {
-            if (location == null) return SearchResults<IEnumerable<ILocation>>.Fail("Invalid location");
-            if (maxDistance <= 0) return SearchResults<IEnumerable<ILocation>>.Fail("Invalid max distance");
-            if (maxResults <= 0) return SearchResults<IEnumerable<ILocation>>.Fail("Invalid max results");
+            if (location == null) return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid location");
+            if (maxDistance <= 0) return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid max distance");
+            if (maxResults <= 0) return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid max results");
 
             if (!IsLocationValid(location))
             {
-                return SearchResults<IEnumerable<ILocation>>.Fail("Invalid location");
+                return SearchResults<IEnumerable<ISearchLocation>>.Fail("Invalid location");
             }
 
             try
             {
                 var locations = _repo.GetLocations(location, maxDistance, maxResults);
-                return SearchResults<IEnumerable<ILocation>>.Succeed(locations);
+                return SearchResults<IEnumerable<ISearchLocation>>.Succeed(locations);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error during search request {Error}", e.Message);
-                return SearchResults<IEnumerable<ILocation>>.Fail(e.Message);
+                return SearchResults<IEnumerable<ISearchLocation>>.Fail(e.Message);
             }
         }
         

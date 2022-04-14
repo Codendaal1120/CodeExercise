@@ -35,7 +35,7 @@ namespace CodeExercise.LocationRepository
         }
 
         /// <inheritdoc/>
-        public IEnumerable<ILocation> GetLocations(ILocation location, int maxDistance, int maxResults)
+        public IEnumerable<ISearchLocation> GetLocations(ILocation location, int maxDistance, int maxResults)
         {
             return _regions.Any()
                 ? GetLocationsGeoHash(location, maxDistance, maxResults)
@@ -82,7 +82,7 @@ namespace CodeExercise.LocationRepository
                 .ToDictionary(k => k.Key, v => v.ToArray());
         }
 
-        private IEnumerable<ILocation> GetLocationsBruteForce(IEnumerable<ILocation> locations, ILocation location, int maxDistance, int maxResults)
+        private IEnumerable<ISearchLocation> GetLocationsBruteForce(IEnumerable<ILocation> locations, ILocation location, int maxDistance, int maxResults)
         {
             var results = locations.Select(x =>
                 {
@@ -95,13 +95,13 @@ namespace CodeExercise.LocationRepository
                         : null;
                 })
                 .Where(x => x != null)
-                .OrderBy(x => x!.DistanceToSearchLocation)
+                .OrderBy(x => x!.Distance)
                 .Take(maxResults);
 
             return results!;
         }
 
-        private IEnumerable<ILocation> GetLocationsGeoHash(ILocation location, int maxDistance, int maxResults)
+        private IEnumerable<ISearchLocation> GetLocationsGeoHash(ILocation location, int maxDistance, int maxResults)
         {
             var hasher = new Geohasher();
             var locationHash = hasher.Encode(location.Latitude, location.Longitude, _settings.HashingPrecision);

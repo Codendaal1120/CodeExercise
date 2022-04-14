@@ -12,7 +12,7 @@
         /// <param name="maxDistance">Max distance from location</param>
         /// <param name="maxResults">Maximum number of results</param>
         /// <returns></returns>
-        IEnumerable<ILocation> GetLocations(ILocation location, int maxDistance, int maxResults);
+        IEnumerable<ISearchLocation> GetLocations(ILocation location, int maxDistance, int maxResults);
 
         /// <summary>
         /// Add a new location to the repository

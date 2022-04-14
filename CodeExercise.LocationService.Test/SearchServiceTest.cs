@@ -8,6 +8,24 @@ using NUnit.Framework;
 
 namespace CodeExercise.LocationService.Test
 {
+    internal class TestSearchLocation : ISearchLocation
+    {
+        public string Address { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Distance { get; set; }
+
+        public TestSearchLocation(ILocation loc)
+        {
+            if (loc == null) throw new ArgumentNullException(nameof(loc));
+
+            Address = loc.Address;
+            Latitude = loc.Latitude;
+            Longitude = loc.Longitude;
+            Distance = 0;
+        }
+    }
+
     public class SearchServiceTest
     {
         private ILocationSearchService _locationSearchService = null!;
@@ -22,7 +40,7 @@ namespace CodeExercise.LocationService.Test
                 It.IsAny<ILocation>(),
                 It.IsAny<int>(),
                 It.IsAny<int>()))
-            .Returns((ILocation loc, int md, int mr) => new[] { loc });
+            .Returns((ILocation loc, int md, int mr) => new ISearchLocation[] { new TestSearchLocation(loc) });
 
             _locationSearchService = new LocationSearchService(new NullLogger<LocationSearchService>(), mockRepo.Object);
         }

@@ -2,9 +2,9 @@
 
 namespace CodeExercise.LocationRepository;
 
-internal class SearchLocation : Location
+internal class SearchLocation : Location, ISearchLocation
 {
-    public double DistanceToSearchLocation { get; }
+    public double Distance { get; }
 
     public SearchLocation(ILocation location, double distance)
     {
@@ -13,6 +13,8 @@ internal class SearchLocation : Location
         Address = location.Address;
         Latitude = location.Latitude;
         Longitude = location.Longitude;
-        DistanceToSearchLocation = distance;
+        Distance = distance;
     }
+
+  
 }

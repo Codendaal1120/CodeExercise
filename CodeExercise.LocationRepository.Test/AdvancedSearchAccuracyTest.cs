@@ -114,7 +114,7 @@ namespace CodeExercise.LocationRepository.Test
         public void TestAdvancedSearchAccuracyWithin1500M()
         {
             //var repo = GetRepo();
-            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestEmptyLocationDataLoader(), new LocationRepoSettings() { UseGeoHashing = true });
+            var repo = new LocationRepo(new NullLogger<LocationRepo>(), new TestEmptyLocationDataLoader(), new LocationRepoSettings() { UseGeoHashing = true, HashingPrecision = 2 });
 
             //-33.92950987391598, 18.526343615045644
             var refLocation = new Location()

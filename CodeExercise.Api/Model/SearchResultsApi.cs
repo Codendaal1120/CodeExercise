@@ -25,16 +25,22 @@ namespace CodeExercise.Api.Model
         /// Location Longitude
         /// </summary>
         public double Longitude { get; }
+        
+        /// <summary>
+        /// Distance to the reference location
+        /// </summary>
+        public double Distance { get; }
 
         /// <summary/>
         /// <exception cref="ArgumentNullException"></exception>
-        public LocationApi(ILocation loc)
+        public LocationApi(ISearchLocation loc)
         {
             if (loc == null) throw new ArgumentNullException(nameof(loc));
 
             Address = loc.Address;
             Latitude = loc.Latitude;
             Longitude = loc.Longitude;
+            Distance = loc.Distance;
         }
     }
 }
