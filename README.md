@@ -14,6 +14,8 @@ You are tasked with developing a system that allows us to query location. It sho
 ## **Architecture**
 The project consists of a API, 'connecting' to a Service layer, which 'connects' to a 'DataLayer'. The API is configured to use OpenApi and as such can be used for testing the Location endpoint (the only endpoint). Additionally I have included unit tests to test the basic service layer and the search logic in the repository layer along with some performance tests.
 
+![gallery](https://raw.githubusercontent.com/Codendaal1120/CodeExercise/main/Documentation/overview.PNG)
+
 #### **API**
 The API receives the LocationService as an injected dependency, which in turns gets its dependencies injected (the LocationRepository). The API has verly litte responsibility and mainly is used to convert runtime interfaces to public models. In this case, the models are identical, but typically this is where I would add models with JSON attributes used to decorate the API payloads.
 
