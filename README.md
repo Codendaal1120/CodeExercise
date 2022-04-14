@@ -24,7 +24,7 @@ Since there is no authentication and only a single GET endpoint, the api can be 
 ![gallery](https://raw.githubusercontent.com/Codendaal1120/CodeExercise/main/Documentation/api.png)
 
 #### **Service layer**
-For the purposes of this exercise the service layer does not do much, since the querying (the main feature of the application) is done on the repository layer, but I thought it best to still included it. Typically, this is where I would add runtime logic.
+For the purposes of this exercise the service layer does not do much, since the querying (the main feature of the application) is done on the repository layer, but I thought it best to still include it. Typically, this is where I would add runtime logic.
 
 #### **Repository layer**
 This is where the magic happens and contains the search algorithms. In a real world scenario, I imagine that the locations would not be stored in memory, but rather on a DB, in which case the search logic will be encapsulated in the storage implementation. In our test case however, the storage is a CSV file, which gets loaded into memory.
